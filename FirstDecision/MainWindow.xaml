@@ -5,8 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FirstDecision"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="275" Width="691" Drop="Window_Drop" AllowDrop="True">
     <Grid>
-        
+        <DataGrid Name="dataGrid" HorizontalAlignment="Left" Height="225" Margin="10,10,0,0" Width="400"
+                  CanUserResizeColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" VerticalAlignment="Top" AreRowDetailsFrozen="True" RowHeaderWidth="0">
+        </DataGrid>
+        <GroupBox Header="Dane zamawiającego" HorizontalAlignment="Left" Height="110" Margin="415,10,0,0" VerticalAlignment="Top" Width="262">
+            <Grid>
+                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Imię i nazwisko :" VerticalAlignment="Top" Width="111"/>
+                <TextBox Name="nameBox" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="121,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <TextBlock HorizontalAlignment="Left" Margin="10,35,0,0" TextWrapping="Wrap" Text="Adres email :" VerticalAlignment="Top" Width="111"/>
+                <TextBox Name="emailBox" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="121,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <TextBlock HorizontalAlignment="Left" Margin="10,60,0,0" TextWrapping="Wrap" Text="Numer :" VerticalAlignment="Top" Width="111"/>
+                <TextBox Name="numberBox" IsEnabled="false" HorizontalAlignment="Left" Height="23" Margin="121,60,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Operacje" HorizontalAlignment="Left" Height="92" Margin="415,125,0,0" VerticalAlignment="Top" Width="262">
+            <Grid>
+                <Button Name="acceptButton" Click="acceptButton_Click" Content="Zaakceptuj" HorizontalAlignment="Left" Margin="34,10,0,0" VerticalAlignment="Top" Width="90" Height="25"/>
+                <Button Name="rejectButton" Click="rejectButton_Click" Content="Odrzuć" HorizontalAlignment="Left" Margin="129,10,0,0" VerticalAlignment="Top" Width="90" Height="25" RenderTransformOrigin="0.789,0.55"/>
+                <Button Name="loadFromFile" Click="loadFromFile_Click" Content="Załaduj z pliku" HorizontalAlignment="Left" Margin="34,40,0,0" VerticalAlignment="Top" Width="90" Height="25" RenderTransformOrigin="0.789,0.55"/>
+            </Grid>
+        </GroupBox>
+
     </Grid>
 </Window>
