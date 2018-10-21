@@ -10,22 +10,22 @@ namespace Server.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly FirstStep _firstStep = new FirstStep();
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult Order()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Tu możesz wysłać do nas zamówienie na swoje nowe kaczuszki";
 
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult History()
         {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 
@@ -34,10 +34,30 @@ namespace Server.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult OrderProducts([FromBody] OrderData order)
+        {
+            _firstStep.Send(order);
+            return Ok();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+    }
+
+    public class OrderData
+    {
+        public IList<ProductData> Products { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
+    }
+
+    public class ProductData
+    {
+        public string Product { get; set; }
+        public int Quantity { get; set; }
     }
 }

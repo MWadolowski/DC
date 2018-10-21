@@ -35,3 +35,8 @@ body {
         display: none;
     }
 }
+
+#currentProducts {
+    border-spacing: 10px;
+    border-collapse: separate;
+}

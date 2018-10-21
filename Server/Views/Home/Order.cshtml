@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Nowe zamówienie";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+
+<div>
+    <text>imię:</text>
+    <input id="name" />
+</div>
+<br />
+<div>
+    <text>nazwisko:</text>
+    <input id="lastName" />
+</div>
+<br />
+<input id="productText" />
+<input id="productQuantity" />
+<button id="add">Dodaj do zamówienia</button>
+
+
+<table id="currentProducts">
+    <tbody>
+        <tr>
+            <td>produkt</td>
+            <td>ile</td>
+        </tr>
+    </tbody>
+</table>
+
+<br />
+<button id="confirm">Zamów</button>
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+        $("#currentProducts").data("data", { Products: [] });
+        $("#add").click(function () {
+            var what = $("#productText").val();
+            var quantity = $("#productQuantity").val();
+            $('#currentProducts tr:last').after('<tr>' +
+                '<td>' +
+                what +
+                '</td>' +
+                '<td>' +
+                quantity +
+                '</td>' +
+                '</tr>');
+            $("#currentProducts").data("data").Products.push({ Product: what, Quantity: quantity });
+        });
+
+        $("#confirm").click(function () {
+            if ($("#currentProducts").data("data").Products.length === 0) return;
+            var data = $("#currentProducts").data("data");
+            data.Name = $("#name").val();
+            data.LastName = $("#lastName").val();
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:44372/Home/OrderProducts",
+                data: JSON.stringify($("#currentProducts").data("data")),
+                contentType: "application/json",
+                dataType: "json"
+            });
+        })
+    </script>
+}
