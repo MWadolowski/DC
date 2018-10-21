@@ -15,6 +15,11 @@
     <input id="lastName" />
 </div>
 <br />
+<div>
+    <text>adres email:</text>
+    <input id="email" />
+</div>
+<br />
 <input id="productText" />
 <input id="productQuantity" />
 <button id="add">Dodaj do zamówienia</button>
@@ -54,6 +59,7 @@
             var data = $("#currentProducts").data("data");
             data.Name = $("#name").val();
             data.LastName = $("#lastName").val();
+            data.Email = $("#email").val();
             $.ajax({
                 type: "POST",
                 url: "https://localhost:44372/Home/OrderProducts",

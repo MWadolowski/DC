@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using Server.Models;
 
 namespace Server.Controllers
@@ -46,18 +44,5 @@ namespace Server.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
-
-    public class OrderData
-    {
-        public IList<ProductData> Products { get; set; }
-        public string Name { get; set; }
-        public string LastName { get; set; }
-    }
-
-    public class ProductData
-    {
-        public string Product { get; set; }
-        public int Quantity { get; set; }
     }
 }
