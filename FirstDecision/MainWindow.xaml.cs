@@ -74,7 +74,16 @@ namespace FirstDecision {
 
         private void rejectButton_Click(object sender, RoutedEventArgs e) {
             if (order != null) {
-                MessageBox.Show("Tu kazać klientowi iść w cholerę.", "GTFO", MessageBoxButton.OK);
+                string notify = "Automatyczny email z odmową na zamówienie "+ numberBox.Text + " zostaje wysłany." + " Powód, dla którego projekt został odrzucony: " + commentTextBox.Text;
+
+                MessageBox.Show(notify, "Odmowa", MessageBoxButton.OK);
+
+                string Body = "Przepraszamy, ale nie jesteśmy zainteresowani Państwa ofertą. " + commentTextBox.Text;
+                string Subject = "Odmowa ofery " + numberBox.Text;
+
+                MailSender esender = new MailSender();
+                esender.Send(emailBox.Text, Body, Subject, null);
+
                 ResetFields();
             }
             else {
@@ -84,7 +93,17 @@ namespace FirstDecision {
 
         private void acceptButton_Click(object sender, RoutedEventArgs e) {
             if (order != null) {
-                MessageBox.Show("Tu wysłać zamówienie dalej.", "KKTHXBYE", MessageBoxButton.OK);
+
+                string notify = "Automatyczny email z akceptacją zamówienia " + numberBox.Text + " zostaje wysłany." + " Dodatkowy komentarz: " + commentTextBox.Text;
+
+                MessageBox.Show(notify, "Akceptacja", MessageBoxButton.OK);
+
+                string Body = "Jesteśmy zainteresowani Państwa ofertą. Przystąpiono, do przetwarzania oferty. Komentarz: " + commentTextBox.Text;
+                string Subject = "Akceptacja oferty ofery " + numberBox.Text;
+
+                MailSender esender = new MailSender();
+                esender.Send(emailBox.Text, Body, Subject, null);
+
                 ResetFields();
             }
             else {
@@ -98,6 +117,7 @@ namespace FirstDecision {
             nameBox.Text = string.Empty;
             emailBox.Text = string.Empty;
             numberBox.Text = string.Empty;
+            commentTextBox.Text = string.Empty;
         }
     }
 }
