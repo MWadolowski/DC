@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using Microsoft.Win32;
@@ -14,6 +15,7 @@ namespace FirstDecision {
 
         public MainWindow() {
             InitializeComponent();
+            Database.start();
         }
 
         private void Window_Drop(object sender, DragEventArgs e) {
