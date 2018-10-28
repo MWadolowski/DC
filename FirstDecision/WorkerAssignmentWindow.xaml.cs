@@ -12,7 +12,7 @@ namespace FirstDecision {
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class WorkerAssignmentWindow : Window {
-
+        private const string actionRequiredString = "* ";
         private List<WorkerAssignmentData> assignments;
         private List<WorkerData> workersSource;
         private List<string> itemsSource;
@@ -37,24 +37,21 @@ namespace FirstDecision {
 
             itemsSource = new List<string>();
             foreach (ProductData product in data.Products) {
-                itemsSource.Add("* " + product.Product);
+                itemsSource.Add(actionRequiredString + product.Product);
             }
             listView.ItemsSource = itemsSource;
         }
 
         private void ListSelectedItemChanged(object sender, MouseButtonEventArgs e) {
             ListViewItem selected = sender as ListViewItem;
-            string selection = selected.Content.ToString().Replace("* ", "");
+            string selection = selected.Content.ToString().Replace(actionRequiredString, string.Empty);
             ProductData product = data.Products.Where(x => x.Product == selection).First();
 
             ProductName.Text = product.Product;
             ProductQty.Text = product.Quantity.ToString();
             try {
                 WorkerAssignmentData assignment = assignments.Where(x => x.orders.Exists(y => y.Product == selection)).First();
-                WorkerAssignment.SelectedItem = workersSource.Where(x => x.Email == assignment.worker.Email).First();
-                int index = itemsSource.IndexOf(product.Product);
-                itemsSource[index] = itemsSource[index].Replace("* ", "");
-                listView.Items.Refresh();
+                WorkerAssignment.SelectedItem = assignment.worker;
             } catch (Exception) {
                 WorkerAssignment.SelectedIndex = -1;
             }
@@ -99,6 +96,11 @@ namespace FirstDecision {
                 }
 
                 assignment.orders.Add(new ProductData() {Product=ProductName.Text, Quantity=int.Parse(ProductQty.Text)});
+
+                int index = itemsSource.IndexOf(ProductName.Text);
+                if (index == -1) index = itemsSource.IndexOf(actionRequiredString + ProductName.Text);
+                itemsSource[index] = itemsSource[index].Replace(actionRequiredString, string.Empty);
+                listView.Items.Refresh();
             }
         }
 
