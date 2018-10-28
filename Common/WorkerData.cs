@@ -1,8 +1,5 @@
 ﻿namespace Models {
-    public class Worker {
-        public int Id {
-            get; set;
-        }
+    public class WorkerData {
         public string FirstName {
             get; set;
         }
@@ -11,6 +8,10 @@
         }
         public string Email {
             get; set;
+        }
+
+        public override string ToString() {
+            return FirstName + " " + LastName;
         }
     }
 }

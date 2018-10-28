@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using Microsoft.Win32;
@@ -60,7 +59,7 @@ namespace FirstDecision {
                 }
 
                 ResetFields();
-                MessageBox.Show("Format wskazanego pliku nie jest obsługiwany. Obsługiwany format plików to .JSON.", "Nie wspierany typ pliku", MessageBoxButton.OK);
+                MessageBox.Show("Format wskazanego pliku nie jest obsługiwany lub wskazano niewłaściwy plik zamówienia.", "Nie wspierany typ pliku", MessageBoxButton.OK);
             }
         }
 
@@ -76,7 +75,7 @@ namespace FirstDecision {
 
         private void rejectButton_Click(object sender, RoutedEventArgs e) {
             if (order != null) {
-                string notify = "Automatyczny email z odmową na zamówienie "+ numberBox.Text + " zostaje wysłany." + " Powód, dla którego projekt został odrzucony: " + commentTextBox.Text;
+                string notify = "Automatyczny email z odmową na zamówienie " + numberBox.Text + " zostaje wysłany." + " Powód, dla którego projekt został odrzucony: " + commentTextBox.Text;
 
                 MessageBox.Show(notify, "Odmowa", MessageBoxButton.OK);
 
@@ -95,10 +94,8 @@ namespace FirstDecision {
 
         private void acceptButton_Click(object sender, RoutedEventArgs e) {
             if (order != null) {
-
-                string notify = "Automatyczny email z akceptacją zamówienia " + numberBox.Text + " zostaje wysłany." + " Dodatkowy komentarz: " + commentTextBox.Text;
-
-                MessageBox.Show(notify, "Akceptacja", MessageBoxButton.OK);
+                WorkerAssignmentWindow workerAssignmentWindow = new WorkerAssignmentWindow(order);
+                workerAssignmentWindow.Show();
 
                 string Body = "Jesteśmy zainteresowani Państwa ofertą. Przystąpiono, do przetwarzania oferty. Komentarz: " + commentTextBox.Text;
                 string Subject = "Akceptacja oferty ofery " + numberBox.Text;
@@ -106,7 +103,9 @@ namespace FirstDecision {
                 MailSender esender = new MailSender();
                 esender.Send(emailBox.Text, Body, Subject, null);
 
+                //przejście do okienka z wyborem pracowników
                 ResetFields();
+                Close();
             }
             else {
                 MessageBox.Show("Najpierw załaduj plik!", "Brak zamówienia.", MessageBoxButton.OK);

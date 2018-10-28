@@ -3,14 +3,17 @@ using Models;
 
 namespace FirstDecision {
     internal static class Database {
-        public static DatabaseTable<Worker> worker;
-        public static DatabaseTable<WorkerAssignment> assingments;
+        public static DatabaseTable<WorkerData> worker;
+        public static DatabaseTable<WorkerAssignmentData> assignments;
 
         static Database() {
-            
+            worker = new DatabaseTable<WorkerData>("worker.json");
+            assignments = new DatabaseTable<WorkerAssignmentData>("assignment.json");
 
-            worker = new DatabaseTable<Worker>("worker.json", true);
-            assingments = new DatabaseTable<WorkerAssignment>("assignment.json", false);
+            if (worker.SelectAll().Count == 0) {
+                worker.InsertElement(new WorkerData() { Email = "unreals@wp.pl", FirstName = "Tytus", LastName = "Bomba" });
+                worker.InsertElement(new WorkerData() { Email = "rozanskiwojciech93@gmail.com", FirstName = "Alfons", LastName = "Hipstler" });
+            }
         }
 
         /**

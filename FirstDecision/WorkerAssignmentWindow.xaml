@@ -1,0 +1,56 @@
+﻿<Window x:Class="FirstDecision.WorkerAssignmentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FirstDecision"
+        mc:Ignorable="d"
+        Title="Worker assignment" Height="302.8" Width="650.4">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="81*"/>
+            <ColumnDefinition Width="80*"/>
+        </Grid.ColumnDefinitions>
+        <ListView Name="listView" HorizontalAlignment="Left" Height="242" Margin="10,10,0,0" VerticalAlignment="Top" Width="300">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListSelectedItemChanged"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <GroupBox Grid.Column="1" Header="Dane przedmiotu" HorizontalAlignment="Left" Height="128" Margin="4,10,0,0" VerticalAlignment="Top" Width="298">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="74*"/>
+                    <ColumnDefinition Width="211*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Nazwa" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                <TextBox Name="ProductName" HorizontalAlignment="Left" Height="23" Margin="4.6,13,0,0" TextWrapping="Wrap" IsEnabled="False" Text="" VerticalAlignment="Top" Width="196" Grid.Column="1"/>
+                <Label Content="Ilość" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top"/>
+                <TextBox Name="ProductQty" HorizontalAlignment="Left" Height="23" Margin="4.6,42,0,0" TextWrapping="Wrap" IsEnabled="False" Text="" VerticalAlignment="Top" Width="196" Grid.Column="1"/>
+                <Label Content="Pracownik" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top"/>
+                <ComboBox Name="WorkerAssignment" HorizontalAlignment="Left" Margin="4.6,70,0,0" VerticalAlignment="Top" Width="196" Grid.Column="1" DropDownClosed="WorkerAssignment_DropDownClosed"/>
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Column="1" Header="Akcje" HorizontalAlignment="Left" Height="108" Margin="4,144,0,0" VerticalAlignment="Top" Width="298">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="74*"/>
+                    <ColumnDefinition Width="211*"/>
+                </Grid.ColumnDefinitions>
+                <Button Name="SendButton" Click="SendButton_Click" Grid.ColumnSpan="2" Content="Zakończ przypisywanie" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" Width="135" Height="25"/>
+                <Button Name="Cancel" Click="Cancel_Click" Content="Anuluj" HorizontalAlignment="Left" Margin="75.6,51,0,0" VerticalAlignment="Top" Width="75" Height="25" Grid.Column="1"/>
+
+            </Grid>
+        </GroupBox>
+        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="374,152,-154,0" VerticalAlignment="Top" Width="100"/>
+
+    </Grid>
+</Window>

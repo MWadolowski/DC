@@ -8,7 +8,7 @@ namespace FirstDecision {
         private List<DATA_TYPE> data;
         private string filePath;
 
-        public DatabaseTable(string filePath, bool addDummies) {
+        public DatabaseTable(string filePath) {
             this.filePath = filePath;
 
             if (File.Exists(filePath)) {
@@ -16,11 +16,6 @@ namespace FirstDecision {
             }
             else {
                 data = new List<DATA_TYPE>();
-                if (addDummies) {
-                    data.Add(new DATA_TYPE());
-                    data.Add(new DATA_TYPE());
-                    data.Add(new DATA_TYPE());
-                }
                 SaveData();
             }
         }
@@ -33,7 +28,7 @@ namespace FirstDecision {
             
             FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate);
             StreamWriter writer = new StreamWriter(stream);
-            string dataString = JsonConvert.SerializeObject(data);
+            string dataString = JsonConvert.SerializeObject(data).Replace("\n", "");
             writer.WriteLine(dataString);
             writer.Flush();
             writer.Close();
