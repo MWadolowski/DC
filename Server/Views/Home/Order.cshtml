@@ -65,7 +65,7 @@
             var label = $("#confirmation");
             $.ajax({
                 type: "POST",
-                url: "https://localhost:44372/Home/OrderProducts",
+                url: document.location.href + "Products",
                 data: JSON.stringify($("#currentProducts").data("data")),
                 contentType: "application/json",
                 dataType: "json",
