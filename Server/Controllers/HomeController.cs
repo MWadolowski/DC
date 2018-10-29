@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Server.Models;
@@ -36,7 +35,7 @@ namespace Server.Controllers
         public IActionResult OrderProducts([FromBody] OrderData order)
         {
             _firstStep.Send(order);
-            return Ok();
+            return Ok(order);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

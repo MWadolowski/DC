@@ -36,6 +36,8 @@
 
 <br />
 <button id="confirm">Zamów</button>
+<br />
+<label id="confirmation"></label>
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script>
@@ -60,13 +62,20 @@
             data.Name = $("#name").val();
             data.LastName = $("#lastName").val();
             data.Email = $("#email").val();
+            var label = $("#confirmation");
             $.ajax({
                 type: "POST",
                 url: "https://localhost:44372/Home/OrderProducts",
                 data: JSON.stringify($("#currentProducts").data("data")),
                 contentType: "application/json",
-                dataType: "json"
+                dataType: "json",
+                success: function () {
+                    label.html("zamówienie zostało złożone");
+                },
+                error: function() {
+                    label.html("zamówienie nie mogło zostać wysłane");
+                }
             });
-        })
+        });
     </script>
 }
