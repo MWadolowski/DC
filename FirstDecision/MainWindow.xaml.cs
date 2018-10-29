@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using Interpreter;
 using Microsoft.Win32;
 using Models;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ namespace FirstDecision {
         public MainWindow() {
             InitializeComponent();
             Database.start();
+            var model = ShitHelper.Model;
         }
 
         private void Window_Drop(object sender, DragEventArgs e) {
