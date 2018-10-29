@@ -12,7 +12,6 @@ namespace Models
             {
                 To = { to },
                 From = new MailAddress("DC.jazda@gmail.com"),
-
                 Body = body,
                 Subject = subject
             };

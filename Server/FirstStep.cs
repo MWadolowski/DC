@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using Interpreter;
 using Models;
 using Newtonsoft.Json;
 
@@ -15,6 +16,8 @@ namespace Server
 
         public void Send(OrderData data)
         {
+            var process = new Process();
+            var current = process.Start;
             var number = GenerateNumber;
             IncreaseNumber();
             data.Number = number;
@@ -26,6 +29,14 @@ namespace Server
                 {
                     Attachment.CreateAttachmentFromString(JsonConvert.SerializeObject(data), $"zamówienie_{number}.json")
                 });
+            ShitHelper.Publish(current.CurrentStep, new ProcessMessage
+            {
+                Step = current.CurrentStep,
+                Attachments = new Dictionary<Data, object>
+                {
+                    {Data.OrderDataFile, data }
+                }
+            });
         }
 
         private int GenerateNumber

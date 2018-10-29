@@ -112,6 +112,10 @@
       <Project>{ee3718c6-edf6-4484-b257-9c53ee846b17}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Interpreter\Interpreter.csproj">
+      <Project>{E74A712E-8524-40CA-8272-30F3A1D11641}</Project>
+      <Name>Interpreter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
