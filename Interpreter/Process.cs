@@ -35,5 +35,7 @@ namespace Interpreter
         public Step Start => _steps.FirstOrDefault(x => x.IsStartingPoint) ?? throw new NotImplementedException("gdzie jest start procesu");
 
         public IList<Step> All => new List<Step>(_steps);
+
+        public static string MyStep { get; set; }
     }
 }
