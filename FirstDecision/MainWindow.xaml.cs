@@ -19,7 +19,7 @@ namespace FirstDecision {
             var model = ShitHelper.Model;
             var consumer = new CommonMessageHandler(model);
             ShitHelper.Handler = new FirstDecisionHandler();
-            //UIMessageUpdater.UpdaterWithUi.
+            UIMessageUpdater.UpdaterWithUi.UpdateUI = UpdateUi;
             model.BasicConsume(StepNames.OrderReceived, false, String.Empty, false, false, null, consumer);
         }
 
@@ -35,6 +35,21 @@ namespace FirstDecision {
             }
         }
 
+        private void UpdateUi(OrderData newOrder)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                order = newOrder;
+                dataGrid.ItemsSource = order.Products;
+                dataGrid.Columns[0].Width = 316;
+                dataGrid.Columns[1].Width = 65;
+
+                nameBox.Text = order.Name + " " + order.LastName;
+                emailBox.Text = order.Email;
+                numberBox.Text = order.Number.ToString();
+            });
+        }
+
         private void LoadFromFile(string path) {
             FileStream file = null;
             StreamReader reader = null;
@@ -45,14 +60,7 @@ namespace FirstDecision {
                 reader = new StreamReader(file);
                 content = reader.ReadToEnd();
                 order = JsonConvert.DeserializeObject<OrderData>(content);
-
-                dataGrid.ItemsSource = order.Products;
-                dataGrid.Columns[0].Width = 316;
-                dataGrid.Columns[1].Width = 65;
-
-                nameBox.Text = order.Name + " " + order.LastName;
-                emailBox.Text = order.Email;
-                numberBox.Text = order.Number.ToString();
+                UpdateUi(order);
                 reader.Close();
             }
             catch (Exception) {
