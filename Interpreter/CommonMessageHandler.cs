@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 
 namespace Interpreter
@@ -11,17 +13,8 @@ namespace Interpreter
 
         public override void HandleBasicDeliver(string consumerTag, ulong deliveryTag, bool redelivered, string exchange, string routingKey, IBasicProperties properties, byte[] body)
         {
-            var message = Deserialize<ProcessMessage>(body);
-            ShitHelper.Handler.Handle(message, deliveryTag);
-        }
-
-        private T Deserialize<T>(byte[] param)
-        {
-            using (MemoryStream ms = new MemoryStream(param))
-            {
-                IFormatter br = new BinaryFormatter();
-                return (T)br.Deserialize(ms);
-            }
+            var message = Encoding.UTF8.GetString(body);
+            ShitHelper.Handler.Handle(JsonConvert.DeserializeObject<ProcessMessage>(message), deliveryTag);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Server
                 Step = current.CurrentStep,
                 Attachments = new Dictionary<Data, object>
                 {
-                    {Data.OrderDataFile, data }
+                    { Data.OrderDataFile, JsonConvert.SerializeObject(data) }
                 }
             });
         }

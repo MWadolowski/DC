@@ -17,6 +17,10 @@ namespace FirstDecision {
             InitializeComponent();
             Database.start();
             var model = ShitHelper.Model;
+            var consumer = new CommonMessageHandler(model);
+            ShitHelper.Handler = new FirstDecisionHandler();
+            //UIMessageUpdater.UpdaterWithUi.
+            model.BasicConsume(StepNames.OrderReceived, false, String.Empty, false, false, null, consumer);
         }
 
         private void Window_Drop(object sender, DragEventArgs e) {

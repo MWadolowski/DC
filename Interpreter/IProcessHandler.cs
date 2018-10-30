@@ -3,6 +3,6 @@
     public interface IProcessHandler
     {
         string StepName { get; }
-        void Handle(ProcessMessage message);
+        void Handle(ProcessMessage message, ulong tag);
     }
 }

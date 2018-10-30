@@ -66,6 +66,8 @@
     </ApplicationDefinition>
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseTable.cs" />
+    <Compile Include="FirstDecisionHandler.cs" />
+    <Compile Include="UIMessageUpdater.cs" />
     <Compile Include="WorkerAssignmentWindow.xaml.cs">
       <DependentUpon>WorkerAssignmentWindow.xaml</DependentUpon>
     </Compile>
@@ -105,6 +107,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="process.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
