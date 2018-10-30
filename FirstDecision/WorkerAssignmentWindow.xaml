@@ -50,7 +50,6 @@
 
             </Grid>
         </GroupBox>
-        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="374,152,-154,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>
