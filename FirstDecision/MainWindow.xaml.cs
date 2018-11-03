@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using Interpreter;
 using Microsoft.Win32;
 using Models;
 using Newtonsoft.Json;
@@ -11,10 +13,17 @@ namespace FirstDecision {
     /// </summary>
     public partial class MainWindow : Window {
         private OrderData order = null;
+        private ulong? messageId;
 
         public MainWindow() {
             InitializeComponent();
+            Process.MyStep = StepNames.OrderReceived;
             Database.start();
+            var model = ShitHelper.Model;
+            var consumer = new CommonMessageHandler(model);
+            ShitHelper.Handler = new FirstDecisionHandler();
+            UIMessageUpdater.UpdaterWithUi.UpdateUI = UpdateUi;
+            model.BasicConsume(StepNames.OrderReceived, false, String.Empty, false, false, null, consumer);
         }
 
         private void Window_Drop(object sender, DragEventArgs e) {
@@ -29,6 +38,22 @@ namespace FirstDecision {
             }
         }
 
+        private void UpdateUi(OrderData newOrder, ulong? id)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                order = newOrder;
+                dataGrid.ItemsSource = order.Products;
+                dataGrid.Columns[0].Width = 316;
+                dataGrid.Columns[1].Width = 65;
+
+                nameBox.Text = order.Name + " " + order.LastName;
+                emailBox.Text = order.Email;
+                numberBox.Text = order.Number.ToString();
+                messageId = id;
+            });
+        }
+
         private void LoadFromFile(string path) {
             FileStream file = null;
             StreamReader reader = null;
@@ -39,14 +64,7 @@ namespace FirstDecision {
                 reader = new StreamReader(file);
                 content = reader.ReadToEnd();
                 order = JsonConvert.DeserializeObject<OrderData>(content);
-
-                dataGrid.ItemsSource = order.Products;
-                dataGrid.Columns[0].Width = 316;
-                dataGrid.Columns[1].Width = 65;
-
-                nameBox.Text = order.Name + " " + order.LastName;
-                emailBox.Text = order.Email;
-                numberBox.Text = order.Number.ToString();
+                UpdateUi(order, null);
                 reader.Close();
             }
             catch (Exception) {
@@ -84,12 +102,25 @@ namespace FirstDecision {
 
                 MailSender esender = new MailSender();
                 esender.Send(emailBox.Text, Body, Subject, null);
-
+                PushProcess(DecisionType.Ok, new Dictionary<Data, object>
+                {
+                    {Data.DenialReason, commentTextBox.Text}
+                });
                 ResetFields();
             }
             else {
                 MessageBox.Show("Najpierw załaduj plik!", "Brak zamówienia.", MessageBoxButton.OK);
             }
+        }
+
+        private void PushProcess(DecisionType decision, Dictionary<Data, object> attachs)
+        {
+            if (messageId.HasValue) ShitHelper.Model.BasicAck(messageId.Value, false);
+            var nextStep = new Process().Next(Process.MyStep, decision);
+            ShitHelper.Publish(nextStep.CurrentStep, new ProcessMessage
+            {
+                Attachments = attachs
+            });
         }
 
         private void acceptButton_Click(object sender, RoutedEventArgs e) {
@@ -106,6 +137,10 @@ namespace FirstDecision {
                 //przejście do okienka z wyborem pracowników
                 ResetFields();
                 Close();
+                PushProcess(DecisionType.Decline, new Dictionary<Data, object>
+                {
+                    {Data.OrderDataFile, order }
+                });
             }
             else {
                 MessageBox.Show("Najpierw załaduj plik!", "Brak zamówienia.", MessageBoxButton.OK);

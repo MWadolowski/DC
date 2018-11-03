@@ -35,8 +35,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.5.1.0\lib\net451\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -60,6 +66,8 @@
     </ApplicationDefinition>
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseTable.cs" />
+    <Compile Include="FirstDecisionHandler.cs" />
+    <Compile Include="UIMessageUpdater.cs" />
     <Compile Include="WorkerAssignmentWindow.xaml.cs">
       <DependentUpon>WorkerAssignmentWindow.xaml</DependentUpon>
     </Compile>
@@ -99,6 +107,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="process.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -111,6 +122,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{ee3718c6-edf6-4484-b257-9c53ee846b17}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interpreter\Interpreter.csproj">
+      <Project>{E74A712E-8524-40CA-8272-30F3A1D11641}</Project>
+      <Name>Interpreter</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
