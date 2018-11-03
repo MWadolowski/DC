@@ -5,9 +5,9 @@ using Newtonsoft.Json;
 
 namespace FirstDecision
 {
-    public class UIMessageUpdater : IProcessHandler
+    public class AcceptHandler : IProcessHandler
     {
-        public string StepName => StepNames.OrderReceived;
+        public string StepName => StepNames.OrderAccepted;
         public Action<OrderData, ulong?> UpdateUi { get; set; }
         public void Handle(ProcessMessage message, ulong tag)
         {
@@ -15,6 +15,6 @@ namespace FirstDecision
             UpdateUi(data, tag);
         }
 
-        public static UIMessageUpdater UpdaterWithUi { get; set; } = new UIMessageUpdater();
+        public static AcceptHandler UpdaterWithUi { get; set; } = new AcceptHandler();
     }
 }

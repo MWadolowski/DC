@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Interpreter;
 using Models;
 
 namespace FirstDecision {
@@ -17,11 +18,13 @@ namespace FirstDecision {
         private List<WorkerData> workersSource;
         private List<string> itemsSource;
         private OrderData data;
+        private readonly ulong _tag;
 
-        public WorkerAssignmentWindow(OrderData data) {
+        public WorkerAssignmentWindow(OrderData data, ulong tag) {
             InitializeComponent();
 
             this.data = data;
+            _tag = tag;
             assignments = new List<WorkerAssignmentData>();
             foreach (WorkerData worker in Database.worker.SelectAll()) {
                 WorkerAssignmentData assignment = new WorkerAssignmentData()
@@ -66,7 +69,13 @@ namespace FirstDecision {
                     Database.assignments.InsertElement(assignment);
                     SendAssignment(assignment);
                 }
-
+                ShitHelper.Model.BasicAck(_tag, false);
+                var step = new Process().Next(StepNames.OrderAccepted, DecisionType.Default);
+                ShitHelper.Publish(step.CurrentStep, new ProcessMessage
+                {
+                    Step = step.CurrentStep,
+                    //Attachments = new Dictionary<Data, object>()
+                });
                 MessageBox.Show("Zamówienie zostało przekazane do dalszej realizacji.");
                 GotoMainWindow();
             }

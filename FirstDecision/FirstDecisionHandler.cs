@@ -7,7 +7,8 @@ namespace FirstDecision
     {
         public override IList<IProcessHandler> Handlers => new List<IProcessHandler>
         {
-            UIMessageUpdater.UpdaterWithUi
+            UIMessageUpdater.UpdaterWithUi,
+            AcceptHandler.UpdaterWithUi
         };
     }
 }
