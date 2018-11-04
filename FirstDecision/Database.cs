@@ -11,8 +11,9 @@ namespace FirstDecision {
             assignments = new DatabaseTable<WorkerAssignmentData>("assignment.json");
 
             if (worker.SelectAll().Count == 0) {
-                worker.InsertElement(new WorkerData() { Email = "unreals@wp.pl", FirstName = "Tytus", LastName = "Bomba" });
+                worker.InsertElement(new WorkerData() { Email = "michal.dominik.brach@gmail.com", FirstName = "Tytus", LastName = "Bomba" });
                 worker.InsertElement(new WorkerData() { Email = "rozanskiwojciech93@gmail.com", FirstName = "Alfons", LastName = "Hipstler" });
+                worker.InsertElement(new WorkerData() { Email = "michal.dominik.brach@gmail.com", FirstName = "Mnichas", LastName = "Brach" });
             }
         }
 

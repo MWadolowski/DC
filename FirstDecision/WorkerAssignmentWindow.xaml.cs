@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Interpreter;
 using Models;
+using ExcelLibrary.SpreadSheet;
+using ExcelLibrary.CompoundDocumentFormat;
 
 namespace FirstDecision {
     /// <summary>
@@ -65,17 +67,38 @@ namespace FirstDecision {
                 MessageBox.Show("Proszę o przypisanie pracownika do realizacji wszystkich części zamówienia!", "Nie przypisane elementy zamówienia");
             }
             else {
+        
                 foreach (WorkerAssignmentData assignment in assignments) {
                     Database.assignments.InsertElement(assignment);
                     SendAssignment(assignment);
+
+                    string fileName = assignment.worker.LastName + "_zamownienie.xls";
+                    Workbook workbook = new Workbook();
+                    Worksheet worksheet = new Worksheet("First Sheet");
+                    worksheet.Cells[0, 0] = new Cell("id");
+                    worksheet.Cells[0, 1] = new Cell("Product name");
+                    worksheet.Cells[0, 2] = new Cell("Quantity");
+                    worksheet.Cells[0, 3] = new Cell("Price");
+
+                    for (int i = 1; i < assignment.orders.Count; i++)
+                    {
+                        worksheet.Cells[i, 0] = new Cell(i);
+                        worksheet.Cells[i, 1] = new Cell(assignment.orders[i].Product);
+                        worksheet.Cells[i, 2] = new Cell(assignment.orders[i].Quantity);
+                    }
+
+                    workbook.Worksheets.Add(worksheet);
+                    workbook.Save(fileName);
+                    
                 }
-                ShitHelper.Model.BasicAck(_tag, false);
-                var step = new Process().Next(StepNames.OrderAccepted, DecisionType.Default);
-                ShitHelper.Publish(step.CurrentStep, new ProcessMessage
-                {
-                    Step = step.CurrentStep,
-                    //Attachments = new Dictionary<Data, object>()
-                });
+
+                //ShitHelper.Model.BasicAck(_tag, false);
+                //var step = new Process().Next(StepNames.OrderAccepted, DecisionType.Default);
+                //ShitHelper.Publish(step.CurrentStep, new ProcessMessage
+                //{
+                //    Step = step.CurrentStep,
+                //    //Attachments = new Dictionary<Data, object>()
+                //});
                 MessageBox.Show("Zamówienie zostało przekazane do dalszej realizacji.");
                 GotoMainWindow();
             }
