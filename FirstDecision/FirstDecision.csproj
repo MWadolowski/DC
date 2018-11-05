@@ -72,6 +72,7 @@
     <Compile Include="DatabaseTable.cs" />
     <Compile Include="DenyHandler.cs" />
     <Compile Include="FirstDecisionHandler.cs" />
+    <Compile Include="MailAttachment.cs" />
     <Compile Include="UIMessageUpdater.cs" />
     <Compile Include="WorkerAssignmentWindow.xaml.cs">
       <DependentUpon>WorkerAssignmentWindow.xaml</DependentUpon>

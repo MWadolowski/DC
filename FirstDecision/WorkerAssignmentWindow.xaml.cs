@@ -9,6 +9,7 @@ using Interpreter;
 using Models;
 using ExcelLibrary.SpreadSheet;
 using ExcelLibrary.CompoundDocumentFormat;
+using System.Net.Mail;
 
 namespace FirstDecision {
     /// <summary>
@@ -67,12 +68,15 @@ namespace FirstDecision {
                 MessageBox.Show("Proszę o przypisanie pracownika do realizacji wszystkich części zamówienia!", "Nie przypisane elementy zamówienia");
             }
             else {
-        
+                string Body = "W załączniku otrzymał Pan/Pani dokument excel, który musi zostać uzupełniony.";
+                string Subject = "Twoja część zamówienia";
+
+
                 foreach (WorkerAssignmentData assignment in assignments) {
                     Database.assignments.InsertElement(assignment);
                     SendAssignment(assignment);
 
-                    string fileName = assignment.worker.LastName + "_zamownienie.xls";
+                    string fileName = assignment.worker.LastName + "_zamowienie.xls";
                     Workbook workbook = new Workbook();
                     Worksheet worksheet = new Worksheet("First Sheet");
                     worksheet.Cells[0, 0] = new Cell("id");
@@ -89,7 +93,12 @@ namespace FirstDecision {
 
                     workbook.Worksheets.Add(worksheet);
                     workbook.Save(fileName);
-                    
+
+                    MailSender esender = new MailSender();
+                    MailMessage MyMessage = new MailMessage();
+                    MyMessage.Attachments.Add(new MailAttachment(fileName));
+
+                    esender.Send(assignment.worker.Email, Body, Subject, MyMessage.Attachments);             
                 }
 
                 //ShitHelper.Model.BasicAck(_tag, false);
