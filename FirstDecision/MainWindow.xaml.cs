@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using Interpreter;
 using Microsoft.Win32;
 using Models;
 using Newtonsoft.Json;
@@ -11,10 +13,20 @@ namespace FirstDecision {
     /// </summary>
     public partial class MainWindow : Window {
         private OrderData order = null;
+        private ulong? messageId;
 
         public MainWindow() {
             InitializeComponent();
+            Process.MyStep = StepNames.OrderReceived;
             Database.start();
+            var model = ShitHelper.Model;
+            var consumer = new CommonMessageHandler(model);
+            ShitHelper.Handler = new FirstDecisionHandler();
+            UIMessageUpdater.UpdaterWithUi.UpdateUi = UpdateUi;
+            AcceptHandler.UpdaterWithUi.UpdateUi = ChooseWorkers;
+            model.BasicConsume(StepNames.OrderReceived, false, String.Empty, false, false, null, consumer);
+            model.BasicConsume(StepNames.OrderAccepted, false, String.Empty, false, false, null, consumer);
+            model.BasicConsume(StepNames.OrderDeclined, false, String.Empty, false, false, null, consumer);
         }
 
         private void Window_Drop(object sender, DragEventArgs e) {
@@ -29,6 +41,22 @@ namespace FirstDecision {
             }
         }
 
+        private void UpdateUi(OrderData newOrder, ulong? id)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                order = newOrder;
+                dataGrid.ItemsSource = order.Products;
+                dataGrid.Columns[0].Width = 316;
+                dataGrid.Columns[1].Width = 65;
+
+                nameBox.Text = order.Name + " " + order.LastName;
+                emailBox.Text = order.Email;
+                numberBox.Text = order.Number.ToString();
+                messageId = id;
+            });
+        }
+
         private void LoadFromFile(string path) {
             FileStream file = null;
             StreamReader reader = null;
@@ -39,14 +67,7 @@ namespace FirstDecision {
                 reader = new StreamReader(file);
                 content = reader.ReadToEnd();
                 order = JsonConvert.DeserializeObject<OrderData>(content);
-
-                dataGrid.ItemsSource = order.Products;
-                dataGrid.Columns[0].Width = 316;
-                dataGrid.Columns[1].Width = 65;
-
-                nameBox.Text = order.Name + " " + order.LastName;
-                emailBox.Text = order.Email;
-                numberBox.Text = order.Number.ToString();
+                UpdateUi(order, null);
                 reader.Close();
             }
             catch (Exception) {
@@ -78,13 +99,11 @@ namespace FirstDecision {
                 string notify = "Automatyczny email z odmową na zamówienie " + numberBox.Text + " zostaje wysłany." + " Powód, dla którego projekt został odrzucony: " + commentTextBox.Text;
 
                 MessageBox.Show(notify, "Odmowa", MessageBoxButton.OK);
-
-                string Body = "Przepraszamy, ale nie jesteśmy zainteresowani Państwa ofertą. " + commentTextBox.Text;
-                string Subject = "Odmowa ofery " + numberBox.Text;
-
-                MailSender esender = new MailSender();
-                esender.Send(emailBox.Text, Body, Subject, null);
-
+                
+                PushProcess(DecisionType.Decline, new Dictionary<Data, object>
+                {
+                    {Data.DenialReason, commentTextBox.Text}
+                });
                 ResetFields();
             }
             else {
@@ -92,20 +111,38 @@ namespace FirstDecision {
             }
         }
 
-        private void acceptButton_Click(object sender, RoutedEventArgs e) {
-            if (order != null) {
-                WorkerAssignmentWindow workerAssignmentWindow = new WorkerAssignmentWindow(order);
+        private void PushProcess(DecisionType decision, Dictionary<Data, object> attachs)
+        {
+            if (messageId.HasValue) ShitHelper.Model.BasicAck(messageId.Value, false);
+            var nextStep = new Process().Next(Process.MyStep, decision);
+            ShitHelper.Publish(nextStep.CurrentStep, new ProcessMessage
+            {
+                Step = nextStep.CurrentStep,
+                Attachments = attachs
+            });
+        }
+
+        private void ChooseWorkers(OrderData sentOrder, ulong? tag)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                messageId = tag;
+                order = sentOrder;
+                WorkerAssignmentWindow workerAssignmentWindow = new WorkerAssignmentWindow(order, messageId.Value);
                 workerAssignmentWindow.Show();
-
-                string Body = "Jesteśmy zainteresowani Państwa ofertą. Przystąpiono, do przetwarzania oferty. Komentarz: " + commentTextBox.Text;
-                string Subject = "Akceptacja oferty ofery " + numberBox.Text;
-
-                MailSender esender = new MailSender();
-                esender.Send(emailBox.Text, Body, Subject, null);
-
                 //przejście do okienka z wyborem pracowników
                 ResetFields();
                 Close();
+            });
+        }
+
+        private void acceptButton_Click(object sender, RoutedEventArgs e) {
+            if (order != null)
+            {
+                PushProcess(DecisionType.Ok, new Dictionary<Data, object>
+                {
+                    {Data.OrderDataFile, JsonConvert.SerializeObject(order) }
+                });
             }
             else {
                 MessageBox.Show("Najpierw załaduj plik!", "Brak zamówienia.", MessageBoxButton.OK);

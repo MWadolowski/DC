@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Server
@@ -20,7 +21,7 @@ namespace Server
                 return new List<string>();
             }
 
-            return File.ReadAllLines(path).ToList();
+            return File.ReadAllLines(path, Encoding.Unicode).ToList();
         }
     }
 }

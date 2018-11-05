@@ -5,7 +5,11 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Interpreter;
 using Models;
+using ExcelLibrary.SpreadSheet;
+using ExcelLibrary.CompoundDocumentFormat;
+using System.Net.Mail;
 
 namespace FirstDecision {
     /// <summary>
@@ -17,11 +21,13 @@ namespace FirstDecision {
         private List<WorkerData> workersSource;
         private List<string> itemsSource;
         private OrderData data;
+        private readonly ulong _tag;
 
-        public WorkerAssignmentWindow(OrderData data) {
+        public WorkerAssignmentWindow(OrderData data, ulong tag) {
             InitializeComponent();
 
             this.data = data;
+            _tag = tag;
             assignments = new List<WorkerAssignmentData>();
             foreach (WorkerData worker in Database.worker.SelectAll()) {
                 WorkerAssignmentData assignment = new WorkerAssignmentData()
@@ -62,11 +68,49 @@ namespace FirstDecision {
                 MessageBox.Show("Proszę o przypisanie pracownika do realizacji wszystkich części zamówienia!", "Nie przypisane elementy zamówienia");
             }
             else {
-                foreach (WorkerAssignmentData assignment in assignments) {
+                string Body = "W załączniku otrzymał Pan/Pani dokument excel, który musi zostać uzupełniony.";
+                string Subject = "Twoja część zamówienia";
+
+
+                foreach (WorkerAssignmentData assignment in assignments)
+                {
                     Database.assignments.InsertElement(assignment);
                     SendAssignment(assignment);
+
+                    if (assignment.orders.Count > 0) { 
+                        string fileName = assignment.worker.LastName + "_zamowienie.xls";
+                        Workbook workbook = new Workbook();
+                        Worksheet worksheet = new Worksheet("First Sheet");
+                        worksheet.Cells[0, 0] = new Cell("id");
+                        worksheet.Cells[0, 1] = new Cell("Product name");
+                        worksheet.Cells[0, 2] = new Cell("Quantity");
+                        worksheet.Cells[0, 3] = new Cell("Price");
+
+                        for (int i = 0; i < assignment.orders.Count; i++)
+                        {
+                            worksheet.Cells[i + 1, 0] = new Cell(i);
+                            worksheet.Cells[i + 1, 1] = new Cell(assignment.orders[i].Product);
+                            worksheet.Cells[i + 1, 2] = new Cell(assignment.orders[i].Quantity);
+                        }
+
+                        workbook.Worksheets.Add(worksheet);
+                        workbook.Save(fileName);
+
+                        MailSender esender = new MailSender();
+                        MailMessage MyMessage = new MailMessage();
+                        MyMessage.Attachments.Add(new MailAttachment(fileName));
+
+                        esender.Send(assignment.worker.Email, Body, Subject, MyMessage.Attachments);
+                    }
                 }
 
+                //ShitHelper.Model.BasicAck(_tag, false);
+                //var step = new Process().Next(StepNames.OrderAccepted, DecisionType.Default);
+                //ShitHelper.Publish(step.CurrentStep, new ProcessMessage
+                //{
+                //    Step = step.CurrentStep,
+                //    //Attachments = new Dictionary<Data, object>()
+                //});
                 MessageBox.Show("Zamówienie zostało przekazane do dalszej realizacji.");
                 GotoMainWindow();
             }
