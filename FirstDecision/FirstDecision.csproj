@@ -67,9 +67,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AcceptHandler.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseTable.cs" />
+    <Compile Include="DenyHandler.cs" />
     <Compile Include="EmailReceiver.cs" />
+    <Compile Include="FirstDecisionHandler.cs" />
+    <Compile Include="MailAttachment.cs" />
+    <Compile Include="UIMessageUpdater.cs" />
     <Compile Include="WorkerAssignmentWindow.xaml.cs">
       <DependentUpon>WorkerAssignmentWindow.xaml</DependentUpon>
     </Compile>
