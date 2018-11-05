@@ -72,33 +72,36 @@ namespace FirstDecision {
                 string Subject = "Twoja część zamówienia";
 
 
-                foreach (WorkerAssignmentData assignment in assignments) {
+                foreach (WorkerAssignmentData assignment in assignments)
+                {
                     Database.assignments.InsertElement(assignment);
                     SendAssignment(assignment);
 
-                    string fileName = assignment.worker.LastName + "_zamowienie.xls";
-                    Workbook workbook = new Workbook();
-                    Worksheet worksheet = new Worksheet("First Sheet");
-                    worksheet.Cells[0, 0] = new Cell("id");
-                    worksheet.Cells[0, 1] = new Cell("Product name");
-                    worksheet.Cells[0, 2] = new Cell("Quantity");
-                    worksheet.Cells[0, 3] = new Cell("Price");
+                    if (assignment.orders.Count > 0) { 
+                        string fileName = assignment.worker.LastName + "_zamowienie.xls";
+                        Workbook workbook = new Workbook();
+                        Worksheet worksheet = new Worksheet("First Sheet");
+                        worksheet.Cells[0, 0] = new Cell("id");
+                        worksheet.Cells[0, 1] = new Cell("Product name");
+                        worksheet.Cells[0, 2] = new Cell("Quantity");
+                        worksheet.Cells[0, 3] = new Cell("Price");
 
-                    for (int i = 1; i < assignment.orders.Count; i++)
-                    {
-                        worksheet.Cells[i, 0] = new Cell(i);
-                        worksheet.Cells[i, 1] = new Cell(assignment.orders[i].Product);
-                        worksheet.Cells[i, 2] = new Cell(assignment.orders[i].Quantity);
+                        for (int i = 0; i < assignment.orders.Count; i++)
+                        {
+                            worksheet.Cells[i + 1, 0] = new Cell(i);
+                            worksheet.Cells[i + 1, 1] = new Cell(assignment.orders[i].Product);
+                            worksheet.Cells[i + 1, 2] = new Cell(assignment.orders[i].Quantity);
+                        }
+
+                        workbook.Worksheets.Add(worksheet);
+                        workbook.Save(fileName);
+
+                        MailSender esender = new MailSender();
+                        MailMessage MyMessage = new MailMessage();
+                        MyMessage.Attachments.Add(new MailAttachment(fileName));
+
+                        esender.Send(assignment.worker.Email, Body, Subject, MyMessage.Attachments);
                     }
-
-                    workbook.Worksheets.Add(worksheet);
-                    workbook.Save(fileName);
-
-                    MailSender esender = new MailSender();
-                    MailMessage MyMessage = new MailMessage();
-                    MyMessage.Attachments.Add(new MailAttachment(fileName));
-
-                    esender.Send(assignment.worker.Email, Body, Subject, MyMessage.Attachments);             
                 }
 
                 //ShitHelper.Model.BasicAck(_tag, false);
