@@ -16,6 +16,8 @@ namespace FirstDecision {
         private ulong? messageId;
 
         public MainWindow() {
+            EmailRepository.Start();
+
             InitializeComponent();
             Process.MyStep = StepNames.OrderReceived;
             Database.start();
@@ -156,6 +158,12 @@ namespace FirstDecision {
             emailBox.Text = string.Empty;
             numberBox.Text = string.Empty;
             commentTextBox.Text = string.Empty;
+        }
+
+        private void viewCompleted_Click(object sender, RoutedEventArgs e) {
+            FinalDecision decision = new FinalDecision();
+            decision.Show();
+            Close();
         }
     }
 }

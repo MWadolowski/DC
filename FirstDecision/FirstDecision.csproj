@@ -71,13 +71,20 @@
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseTable.cs" />
     <Compile Include="DenyHandler.cs" />
-    <Compile Include="EmailReceiver.cs" />
+    <Compile Include="EmailRepository.cs" />
+    <Compile Include="FinalDecision.xaml.cs">
+      <DependentUpon>FinalDecision.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FirstDecisionHandler.cs" />
     <Compile Include="MailAttachment.cs" />
     <Compile Include="UIMessageUpdater.cs" />
     <Compile Include="WorkerAssignmentWindow.xaml.cs">
       <DependentUpon>WorkerAssignmentWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="FinalDecision.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

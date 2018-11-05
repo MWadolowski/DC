@@ -26,7 +26,7 @@ namespace FirstDecision {
 
         private void SaveData() {
             
-            FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate);
+            FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate | FileMode.Truncate);
             StreamWriter writer = new StreamWriter(stream);
             string dataString = JsonConvert.SerializeObject(data).Replace("\n", "");
             writer.WriteLine(dataString);

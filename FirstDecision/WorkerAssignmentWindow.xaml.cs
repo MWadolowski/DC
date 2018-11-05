@@ -33,7 +33,8 @@ namespace FirstDecision {
                 WorkerAssignmentData assignment = new WorkerAssignmentData()
                 {
                     worker = worker,
-                    orders = new List<ProductData>()
+                    orders = new List<ProductData>(),
+                    orderId = data.Number
                 };
                 assignments.Add(assignment);
             }
@@ -69,15 +70,15 @@ namespace FirstDecision {
             }
             else {
                 string Body = "W załączniku otrzymał Pan/Pani dokument excel, który musi zostać uzupełniony.";
-                string Subject = "Twoja część zamówienia";
+                string Subject = "Zamówienie nr " + data.Number;
 
 
                 foreach (WorkerAssignmentData assignment in assignments)
                 {
-                    Database.assignments.InsertElement(assignment);
-                    SendAssignment(assignment);
+                    if (assignment.orders.Count > 0) {
+                        Database.assignments.InsertElement(assignment);
+                        SendAssignment(assignment);
 
-                    if (assignment.orders.Count > 0) { 
                         string fileName = assignment.worker.LastName + "_zamowienie.xls";
                         Workbook workbook = new Workbook();
                         Worksheet worksheet = new Worksheet("First Sheet");

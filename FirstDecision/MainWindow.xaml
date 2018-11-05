@@ -26,6 +26,7 @@
                 <Button Name="acceptButton" Click="acceptButton_Click" Content="Zaakceptuj" HorizontalAlignment="Left" Margin="34,10,0,0" VerticalAlignment="Top" Width="90" Height="25"/>
                 <Button Name="rejectButton" Click="rejectButton_Click" Content="Odrzuć" HorizontalAlignment="Left" Margin="129,10,0,0" VerticalAlignment="Top" Width="90" Height="25" RenderTransformOrigin="0.789,0.55"/>
                 <Button Name="loadFromFile" Click="loadFromFile_Click" Content="Załaduj z pliku" HorizontalAlignment="Left" Margin="34,40,0,0" VerticalAlignment="Top" Width="90" Height="25" RenderTransformOrigin="0.789,0.55"/>
+                <Button Name="viewCompleted" Click="viewCompleted_Click" Content="Pokaż skompletowane" HorizontalAlignment="Left" Margin="129,40,0,0" VerticalAlignment="Top" Width="128" Height="25" RenderTransformOrigin="0.789,0.55"/>
             </Grid>
         </GroupBox>
         <TextBox x:Name="commentTextBox" HorizontalAlignment="Left" Height="23" Margin="546,226,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="169"/>

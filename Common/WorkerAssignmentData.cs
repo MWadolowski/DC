@@ -8,6 +8,9 @@ namespace Models {
         public List<ProductData> orders {
             get; set;
         }
+        public int orderId {
+            get; set;
+        }
 
     }
 }

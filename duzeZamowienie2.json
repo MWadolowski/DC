@@ -1,0 +1,20 @@
+﻿{
+  "Products": [
+    {
+      "Product": "Kaczka janusz",
+      "Quantity": 32
+    },
+    {
+      "Product": "The Quacken 2",
+      "Quantity": 1
+    },
+    {
+      "Product": "The Quacken",
+      "Quantity": 6
+    }
+  ],
+  "Name": "Tytus",
+  "LastName": "Bomba",
+  "Email": "michal.dominik.brach@gmail.com",
+  "Number": 418
+}
