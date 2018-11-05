@@ -34,6 +34,7 @@ namespace Interpreter
                     var queue = model.QueueDeclare(stepName, true, false, false);
                     model.QueueBind(queue, exchangeName, stepName);
                 }
+                model.BasicQos(0, 1, false);
                 return model;
             }
         }
