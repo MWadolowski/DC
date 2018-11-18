@@ -4,14 +4,36 @@
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
-
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+<table id="history" style="border: solid 1px black;">
+    <tbody>
+    <tr style="border-bottom: 3px black solid">
+        <td style="border-left: 1px solid black; border-right: 1px solid black;">Numer zamówienia</td>
+        <td style="border-left: 1px solid black; border-right: 1px solid black;">Produkt</td>
+        <td style="border-left: 1px solid black; border-right: 1px solid black;">Ile</td>
+    </tr>
+    @{
+        var data = new HistoryBase();
+        foreach (var record in data.Records)
+        {
+            <tr style="border-bottom: 1px black solid">
+                <td>@record.Number</td>
+                <td/>
+                <td/>
+            </tr>
+            foreach (var product in record.Products)
+            {
+                <tr style="border-bottom: 1px black solid">
+                    <td></td>
+                    <td style="border-left: 1px solid black; border-right: 1px solid black;">@product.Product</td>
+                    <td>@product.Quantity</td>
+                </tr>
+            }
+            <tr style="border-bottom: 3px black solid">
+                <td/>
+                <td/>
+                <td/>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
