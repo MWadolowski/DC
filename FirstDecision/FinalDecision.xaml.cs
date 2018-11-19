@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Interpreter;
 using Models;
+using Newtonsoft.Json;
 
 namespace FirstDecision {
     /// <summary>
@@ -169,6 +170,10 @@ namespace FirstDecision {
             ShitHelper.Publish(step.CurrentStep, new ProcessMessage
             {
                 Step = step.CurrentStep,
+                Attachments = new Dictionary<Data, object>
+                {
+                    { Data.OrderDataFile, JsonConvert.SerializeObject(parsedData) }
+                }
             });
 
             SetEditorFromOrder(null);

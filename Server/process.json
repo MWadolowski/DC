@@ -1,1 +1,50 @@
-[{"NextStepsAccordingToDecision":{"Ok":"Przyjęte Zamówienie","Decline":"Odrzucenie zamówienia"},"CurrentStep":"Odebrane Zamówienie","IsStartingPoint":true,"IsManual":true},{"NextStepsAccordingToDecision":{},"CurrentStep":"Przyjęte Zamówienie","IsStartingPoint":false,"IsManual":false},{"NextStepsAccordingToDecision":{},"CurrentStep":"Odrzucenie zamówienia","IsStartingPoint":false,"IsManual":false}]
+[
+  {
+    "NextStepsAccordingToDecision": {
+      "Ok": "Przyjęte Zamówienie",
+      "Decline": "Odrzucenie zamówienia"
+    },
+    "CurrentStep": "Odebrane Zamówienie",
+    "IsStartingPoint": true,
+    "IsManual": true
+  },
+  {
+    "NextStepsAccordingToDecision": {
+      "Ok": "Zamównienie do dalszej realizacji",
+      "Decline": "Odrzucenie zamówienia"
+    },
+    "CurrentStep": "Przyjęte Zamówienie",
+    "IsStartingPoint": false,
+    "IsManual": false
+  },
+  {
+    "NextStepsAccordingToDecision": {},
+    "CurrentStep": "Odrzucenie zamówienia",
+    "IsStartingPoint": false,
+    "IsManual": false
+  },
+  {
+    "NextStepsAccordingToDecision": {
+      "Ok": "Zamównienie zostało złączone po wypełnieniu przez pracowników",
+      "Decline": "Odrzucenie zamówienia"
+    },
+    "CurrentStep": "Zamównienie do dalszej realizacji",
+    "IsStartingPoint": false,
+    "IsManual": false
+  },
+  {
+    "NextStepsAccordingToDecision": {
+      "Ok": "Zamównienie zostało przetworzone pomyślnie",
+      "Decline": "Odrzucenie zamówienia"
+    },
+    "CurrentStep": "Zamównienie zostało złączone po wypełnieniu przez pracowników",
+    "IsStartingPoint": false,
+    "IsManual": false
+  },
+  {
+    "NextStepsAccordingToDecision": {},
+    "CurrentStep": "Zamównienie zostało przetworzone pomyślnie",
+    "IsStartingPoint": false,
+    "IsManual": false
+  }
+]

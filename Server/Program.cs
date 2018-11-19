@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using Interpreter;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Server
 {
@@ -14,6 +9,13 @@ namespace Server
     {
         public static void Main(string[] args)
         {
+            var model = ShitHelper.Model;
+            var consumer = new CommonMessageHandler(model);
+            ShitHelper.Handler = new ServerHandler();
+            model.BasicConsume(StepNames.OrderAccepted, false, String.Empty, false, false, null, consumer);
+            model.BasicConsume(StepNames.OrderForImplementation, false, String.Empty, false, false, null, consumer);
+            model.BasicConsume(StepNames.OrderMerged, false, String.Empty, false, false, null, consumer);
+            model.BasicConsume(StepNames.OrderSucces, false, String.Empty, false, false, null, consumer);
             CreateWebHostBuilder(args).Build().Run();
         }
 
