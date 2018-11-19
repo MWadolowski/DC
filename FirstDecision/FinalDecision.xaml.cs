@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Interpreter;
 using Models;
 
 namespace FirstDecision {
@@ -71,6 +72,13 @@ namespace FirstDecision {
                 if (!unfinished) {
                     ids.Add(orderId);
                 }
+
+                //rozumiem ze tutaj jest juz sytuacja w której excele są zmergowane??? Jesli tak to ten kod jes ok
+                var step = new Process().Next(StepNames.OrderForImplementation, DecisionType.Ok);
+                ShitHelper.Publish(step.CurrentStep, new ProcessMessage
+                {
+                    Step = step.CurrentStep,
+                });
             }
 
             OrdersList.Items.Refresh();
@@ -157,6 +165,12 @@ namespace FirstDecision {
 
             MessageBox.Show("Tutaj należy dodać dalszą część.", "Wysłanie wiadomości");
 
+            var step = new Process().Next(StepNames.OrderMerged, DecisionType.Ok);
+            ShitHelper.Publish(step.CurrentStep, new ProcessMessage
+            {
+                Step = step.CurrentStep,
+            });
+
             SetEditorFromOrder(null);
         }
 
@@ -180,7 +194,12 @@ namespace FirstDecision {
             OrdersList.Items.Refresh();
 
             MessageBox.Show("Odmowa została wysłana.", "Wysłanie wiadomości");
-            
+            var step = new Process().Next(StepNames.OrderMerged, DecisionType.Decline);
+            ShitHelper.Publish(step.CurrentStep, new ProcessMessage
+            {
+                Step = step.CurrentStep,
+            });
+
             SetEditorFromOrder(null);
 
         }

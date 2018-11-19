@@ -82,7 +82,7 @@ namespace FirstDecision {
                         Database.assignments.InsertElement(assignment);
                         SendAssignment(assignment);
 
-                        string fileName = DateTime.Now + "-" + assignment.worker.LastName + "_zamowienie.xls";
+                        string fileName = assignment.worker.LastName + "_zamowienie.xls";
                         Workbook workbook = ExcelManager.CreateWorkbookFromAssignment(assignment);
                         workbook.Save(fileName);
 
@@ -95,6 +95,11 @@ namespace FirstDecision {
                 }
 
                 ShitHelper.Model.BasicAck(_tag, false);
+                var step = new Process().Next(StepNames.OrderAccepted, DecisionType.Ok);
+                ShitHelper.Publish(step.CurrentStep, new ProcessMessage
+                {
+                    Step = step.CurrentStep,
+                });
                 MessageBox.Show("Zamówienie zostało przekazane do dalszej realizacji.");
                 GotoMainWindow();
             }

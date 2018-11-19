@@ -2,7 +2,6 @@
 {
     public enum DecisionType
     {
-        Default,
         Ok,
         Decline
     }
