@@ -49,8 +49,9 @@ namespace FirstDecision {
             {
                 order = newOrder;
                 dataGrid.ItemsSource = order.Products;
-                dataGrid.Columns[0].Width = 316;
-                dataGrid.Columns[1].Width = 65;
+                dataGrid.Items.Refresh();
+                //dataGrid.Columns[0].Width = 316;
+                //dataGrid.Columns[1].Width = 65;
 
                 nameBox.Text = order.Name + " " + order.LastName;
                 emailBox.Text = order.Email;

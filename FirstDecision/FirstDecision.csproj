@@ -72,6 +72,7 @@
     <Compile Include="DatabaseTable.cs" />
     <Compile Include="DenyHandler.cs" />
     <Compile Include="EmailRepository.cs" />
+    <Compile Include="ExcelManager.cs" />
     <Compile Include="FinalDecision.xaml.cs">
       <DependentUpon>FinalDecision.xaml</DependentUpon>
     </Compile>

@@ -5,16 +5,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FirstDecision"
         mc:Ignorable="d"
-        Title="FinalDecision" Height="450" Width="800">
+        Title="FinalDecision" Height="297.6" Width="876">
     <Grid>
-        <ListView Name="OrdersList" HorizontalAlignment="Left" Height="337" Margin="10,10,0,0" VerticalAlignment="Top" Width="137">
+        <ListView Name="OrdersList" HorizontalAlignment="Left" Height="200" Margin="10,10,0,0" VerticalAlignment="Top" Width="103">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ChangeSelectedItem"/>
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
-        <Button x:Name="RefreshButton" Click="RefreshButton_Click" Content="Odśwież" Margin="10,352,708,40"/>
+        <ListView Name="UnfinishedOrdersList" HorizontalAlignment="Left" Height="200" Margin="118,10,0,0" VerticalAlignment="Top" Width="103">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ChangeSelectedItem"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <GroupBox Header="GroupBox" Margin="252,10,10.4,0" Height="248" VerticalAlignment="Top">
+            <Grid>
+                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Zamawiający" VerticalAlignment="Top" Width="78"/>
+                <TextBox Name="Credentials" IsEnabled="False" HorizontalAlignment="Left" Height="23" Margin="88,9,0,0"  VerticalAlignment="Top" Width="149"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="10,38,0,0" Text="Email" VerticalAlignment="Top" Width="78"/>
+                <TextBox Name="Email" IsEnabled="False" HorizontalAlignment="Left" Height="23" Margin="88,37,0,0" VerticalAlignment="Top" Width="149"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="10,66,0,0" TextWrapping="Wrap" Text="Numer" VerticalAlignment="Top" Width="78"/>
+                <TextBox Name="OrderId" IsEnabled="False" HorizontalAlignment="Left" Height="23" Margin="88,65,0,0" VerticalAlignment="Top" Width="149"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="8,137,0,0" TextWrapping="Wrap" Text="Czy gotowe" VerticalAlignment="Top" Width="75"/>
+                <CheckBox Name="IsReady" IsEnabled="False" HorizontalAlignment="Left" Margin="88,138,0,0" VerticalAlignment="Top"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="10,94,0,0" TextWrapping="Wrap" Text="Nadesłane" VerticalAlignment="Top" Width="78"/>
+                <TextBox Name="Pieces" IsEnabled="False" HorizontalAlignment="Left" Height="23" Margin="88,93,0,0" VerticalAlignment="Top" Width="149"/>
+
+                <DataGrid Name="OrderContent" HorizontalAlignment="Left" Height="206" Margin="242,10,0,0" Width="342"
+                  CanUserResizeColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" VerticalAlignment="Top" AreRowDetailsFrozen="True" RowHeaderWidth="0"/>
+
+                <GroupBox Header="Akcje" HorizontalAlignment="Left" Height="58" Margin="10,158,0,0" VerticalAlignment="Top" Width="227">
+                    <Grid>
+                        <Button Name="Accept" Click="Accept_Click" Content="Zatwierdź" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+                        <Button Name="Reject" Click="Reject_Click" Content="Odrzuć" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75"/>
+                    </Grid>
+                </GroupBox>
+
+
+            </Grid>
+        </GroupBox>
+        <Button x:Name="RefreshButton" Click="RefreshButton_Click" Content="Odśwież" Margin="10,215,0,0" Height="19" VerticalAlignment="Top" HorizontalAlignment="Left" Width="103"/>
 
     </Grid>
 </Window>

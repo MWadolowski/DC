@@ -10,6 +10,7 @@ using Models;
 using ExcelLibrary.SpreadSheet;
 using ExcelLibrary.CompoundDocumentFormat;
 using System.Net.Mail;
+using System.IO;
 
 namespace FirstDecision {
     /// <summary>
@@ -69,6 +70,8 @@ namespace FirstDecision {
                 MessageBox.Show("Proszę o przypisanie pracownika do realizacji wszystkich części zamówienia!", "Nie przypisane elementy zamówienia");
             }
             else {
+                Database.orders.InsertElement(data);
+
                 string Body = "W załączniku otrzymał Pan/Pani dokument excel, który musi zostać uzupełniony.";
                 string Subject = "Zamówienie nr " + data.Number;
 
@@ -79,22 +82,8 @@ namespace FirstDecision {
                         Database.assignments.InsertElement(assignment);
                         SendAssignment(assignment);
 
-                        string fileName = assignment.worker.LastName + "_zamowienie.xls";
-                        Workbook workbook = new Workbook();
-                        Worksheet worksheet = new Worksheet("First Sheet");
-                        worksheet.Cells[0, 0] = new Cell("id");
-                        worksheet.Cells[0, 1] = new Cell("Product name");
-                        worksheet.Cells[0, 2] = new Cell("Quantity");
-                        worksheet.Cells[0, 3] = new Cell("Price");
-
-                        for (int i = 0; i < assignment.orders.Count; i++)
-                        {
-                            worksheet.Cells[i + 1, 0] = new Cell(i);
-                            worksheet.Cells[i + 1, 1] = new Cell(assignment.orders[i].Product);
-                            worksheet.Cells[i + 1, 2] = new Cell(assignment.orders[i].Quantity);
-                        }
-
-                        workbook.Worksheets.Add(worksheet);
+                        string fileName = DateTime.Now + "-" + assignment.worker.LastName + "_zamowienie.xls";
+                        Workbook workbook = ExcelManager.CreateWorkbookFromAssignment(assignment);
                         workbook.Save(fileName);
 
                         MailSender esender = new MailSender();
@@ -106,12 +95,6 @@ namespace FirstDecision {
                 }
 
                 ShitHelper.Model.BasicAck(_tag, false);
-                //var step = new Process().Next(StepNames.OrderAccepted, DecisionType.Default);
-                //ShitHelper.Publish(step.CurrentStep, new ProcessMessage
-                //{
-                //    Step = step.CurrentStep,
-                //    //Attachments = new Dictionary<Data, object>()
-                //});
                 MessageBox.Show("Zamówienie zostało przekazane do dalszej realizacji.");
                 GotoMainWindow();
             }

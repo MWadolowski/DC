@@ -1,7 +1,7 @@
 ﻿{
   "Products": [
     {
-      "Product": "Zółta kaczka wkurzonego programisty",
+      "Product": "Kaczka janusz",
       "Quantity": 32
     },
     {
@@ -16,5 +16,5 @@
   "Name": "Tytus",
   "LastName": "Bomba",
   "Email": "michal.dominik.brach@gmail.com",
-  "Number": 444
+  "Number": 321
 }

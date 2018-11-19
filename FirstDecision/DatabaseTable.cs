@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace FirstDecision {
@@ -24,9 +23,12 @@ namespace FirstDecision {
             SaveData();
         }
 
-        private void SaveData() {
-            
-            FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate | FileMode.Truncate);
+        public void SaveData() {
+            if (File.Exists(filePath)) {
+                File.Delete(filePath);
+            }
+
+            FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate);
             StreamWriter writer = new StreamWriter(stream);
             string dataString = JsonConvert.SerializeObject(data).Replace("\n", "");
             writer.WriteLine(dataString);
