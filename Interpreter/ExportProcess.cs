@@ -23,11 +23,38 @@ namespace Interpreter
                 },
                 new Step
                 {
+                    NextStepsAccordingToDecision = new Dictionary<DecisionType, string>
+                    {
+                        {DecisionType.Ok, StepNames.OrderForImplementation },
+                        {DecisionType.Decline, StepNames.OrderDeclined }
+                    },
                     CurrentStep = StepNames.OrderAccepted
                 },
                 new Step
                 {
                     CurrentStep = StepNames.OrderDeclined
+                },
+                new Step
+                {
+                    NextStepsAccordingToDecision = new Dictionary<DecisionType, string>
+                    {
+                        {DecisionType.Ok, StepNames.OrderMerged },
+                        {DecisionType.Decline, StepNames.OrderDeclined }
+                    },
+                    CurrentStep = StepNames.OrderForImplementation
+                },
+                new Step
+                {
+                    NextStepsAccordingToDecision = new Dictionary<DecisionType, string>
+                    {
+                        {DecisionType.Ok, StepNames.OrderSucces },
+                        {DecisionType.Decline, StepNames.OrderDeclined }
+                    },
+                    CurrentStep = StepNames.OrderMerged
+                },
+                new Step
+                {
+                    CurrentStep = StepNames.OrderSucces
                 }
             };
             using (var writer = File.CreateText("./process.json"))

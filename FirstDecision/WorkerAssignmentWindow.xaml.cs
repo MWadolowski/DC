@@ -106,12 +106,12 @@ namespace FirstDecision {
                 }
 
                 ShitHelper.Model.BasicAck(_tag, false);
-                //var step = new Process().Next(StepNames.OrderAccepted, DecisionType.Default);
-                //ShitHelper.Publish(step.CurrentStep, new ProcessMessage
-                //{
-                //    Step = step.CurrentStep,
-                //    //Attachments = new Dictionary<Data, object>()
-                //});
+                var step = new Process().Next(StepNames.OrderAccepted, DecisionType.Default);
+                ShitHelper.Publish(step.CurrentStep, new ProcessMessage
+                {
+                    Step = step.CurrentStep,
+                    //Attachments = new Dictionary<Data, object>()
+                });
                 MessageBox.Show("Zamówienie zostało przekazane do dalszej realizacji.");
                 GotoMainWindow();
             }
