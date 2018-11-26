@@ -29,6 +29,7 @@ namespace Server
             //Stwórz pisaka, tym się wszystko rysuje
             XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Prepend);
             //Czcionki, mozesz sobie zmienic, jesli chcesz. Uwaga - na koncu musi byc options bo inaczej pierdoli polskie znaki
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             XFont fontLarge = new XFont("Georgia", 24, XFontStyle.Bold, options);
             XFont fontNormal = new XFont("Georgia", 19, XFontStyle.Regular, options);
             XFont fontSmall = new XFont("Georgia", 17, XFontStyle.Regular, options);

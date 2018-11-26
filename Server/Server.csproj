@@ -8,6 +8,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="PDFsharp" Version="1.32.3057" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
