@@ -1,5 +1,6 @@
 ﻿using Interpreter;
 using Models;
+using Newtonsoft.Json;
 
 namespace FirstDecision
 {
@@ -9,7 +10,7 @@ namespace FirstDecision
 
         public void Handle(ProcessMessage message, ulong tag)
         {
-            var order = message.Attachments[Data.OrderDataFile] as OrderData;
+            var order = JsonConvert.DeserializeObject<OrderData>(message.Attachments[Data.OrderDataFile] as string);
             var number = order.Number;
             var reason = message.Attachments[Data.DenialReason] as string;
             string Body = "Przepraszamy, ale nie jesteśmy zainteresowani Państwa ofertą. " + reason;

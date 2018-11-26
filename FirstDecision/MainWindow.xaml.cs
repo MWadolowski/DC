@@ -105,7 +105,8 @@ namespace FirstDecision {
                 
                 PushProcess(DecisionType.Decline, new Dictionary<Data, object>
                 {
-                    {Data.DenialReason, commentTextBox.Text}
+                    {Data.DenialReason, commentTextBox.Text},
+                    {Data.OrderDataFile, JsonConvert.SerializeObject(order)}
                 });
                 ResetFields();
             }
